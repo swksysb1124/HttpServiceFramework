@@ -144,8 +144,9 @@ private static void testGET() {
 		public void onSuccess(String content) {
 			System.out.println("SUCCESS");
 			System.out.println(content);
-			// 可以將content內容，在轉換成Entity物件
-			// 並依據Entitiy內容做處理
+			
+			// 可以將content內容，轉換成Entity物件
+			// 再依據Entitiy內容做處理
 			//
 			// ex:
 			// Entity ent = JSONParserUtil.fromJson(content, Entity.class);
@@ -156,6 +157,7 @@ private static void testGET() {
 		public void onFail(int errorType, String errorMessage) {
 			System.out.println("ERROR");
 			System.out.println("[error:"+errorType+"] "+errorMessage);
+			
 			// 可以依據回傳的錯誤訊息做處理
 			//
 			// ex:
