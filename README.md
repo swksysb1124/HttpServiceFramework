@@ -4,7 +4,7 @@
 
 ### 格式化 MobileAPI 的 URL資訊
 
-將 MobileAPI 的 URL資訊 存成 XML 格式，格式如下：
+將 MobileAPI 的 URL資訊 存成 XML格式，格式如下：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -88,7 +88,7 @@ public class ExampleRemoteService
 		String body = JSONParserUtil.toJson(new UserAccount(email, password));
 		
 		Response response = getResponse("testPOST", rqProperties, null, body);
-		callback(response, callback);
+	        callback(response, callback);
 	}
 }
 ```
@@ -99,19 +99,19 @@ public class ExampleRemoteService
 public class BaseRemoteService 
 	implements RemoteService{
 	
-	// 定義生成 URL 字串的方法，這會用在呼叫 Http Request 前被使用，預設使用 DefaultURLStringUtil.toString(urlData)
+	// 定義生成 URL字串 的方法，這會用在發送 Http Request 前被使用。預設使用 DefaultURLStringUtil.toString(urlData)
 	@Override
 	public String getURLString(final URLInfo urlData) {
 		return DefaultURLStringUtil.toString(urlData);
 	}
 	
-	// 定義 RequestManager 的實體，預設使用 HttpURLConnection 實現的 DefaultRequestManager物件
+	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager物件
 	@Override
 	public RequestManager getRequesManager() {
 		return new DefaultRequestManager();
 	}
 	
-	// 定義 URLConfigManager 的實體，預設使用 DefaultURLConfigManager物件
+	// 注入 URLConfigManager 的實體。預設使用 DefaultURLConfigManager物件
 	@Override
 	public URLConfigManager getURLConfigManager() {
 		return DefaultURLConfigManager.getInstance();
@@ -125,7 +125,7 @@ public class BaseRemoteService
 	    return getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
 	} 
 	
-	定義依據 Response 結果回調的動作，預設使用 DefaultCallbackUtil.callback(response, callback)
+	// 定義取得結果後回調的動作。預設使用 DefaultCallbackUtil.callback(response, callback)
 	@Override
 	public void callback(Response response, RequestCallback callback) {
 		DefaultCallbackUtil.callback(response, callback);
