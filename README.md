@@ -93,25 +93,30 @@ public class ExampleRemoteService
 }
 ```
 
-特別說明`BaseRemoteService`內容
+#### 特別說明`BaseRemoteService`內容
+
 ```java
 public class BaseRemoteService 
 	implements RemoteService{
 	
+	// 定義生成 URL 字串的方法，這會用在呼叫 Http Request 前被使用，預設使用 DefaultURLStringUtil.toString(urlData)
 	@Override
 	public String getURLString(final URLInfo urlData) {
 		return DefaultURLStringUtil.toString(urlData);
 	}
 	
+	// 定義 RequestManager 的實體，預設使用 HttpURLConnection 實現的 DefaultRequestManager物件
 	@Override
 	public RequestManager getRequesManager() {
 		return new DefaultRequestManager();
 	}
 	
+	// 定義 URLConfigManager 的實體，預設使用 DefaultURLConfigManager物件
 	@Override
 	public URLConfigManager getURLConfigManager() {
 		return DefaultURLConfigManager.getInstance();
 	}
+	
 	
 	@Override
 	public Response getResponse(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, final String requestBody) {
@@ -120,6 +125,7 @@ public class BaseRemoteService
 	    return getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
 	} 
 	
+	定義依據 Response 結果回調的動作，預設使用 DefaultCallbackUtil.callback(response, callback)
 	@Override
 	public void callback(Response response, RequestCallback callback) {
 		DefaultCallbackUtil.callback(response, callback);
@@ -127,32 +133,7 @@ public class BaseRemoteService
 }
 ```
 
-
-```java
-public String getURLString(final URLInfo urlData) {...}
-```
-定義生成URL字串的方法，這會用在呼叫Http Request前被使用
-
-
-```java
-public RequestManager getRequesManager() {...}
-```
-定義`RequestManager`的實體，預設使用`HttpURLConnection`實現的`DefaultRequestManager`
-
-
-```java
-public URLConfigManager getURLConfigManager() {...}
-```
-
-定義`URLConfigManager`的實體，預設使用`DefaultURLConfigManager`
-
-```java
-public void callback(Response response, RequestCallback callback) {...}
-```
-定義依據`Response`結果回調的動作，預設使用 `DefaultCallbackUtil.callback(response, callback)`
-
-
-### 實際調用
+### 調用方式
 
 ```java
 private static void testGET() {
