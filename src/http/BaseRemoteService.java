@@ -2,18 +2,25 @@ package http;
 
 import java.util.List;
 
-public abstract class AbstractRemoteService 
+import util.DefaultCallbackUtil;
+import util.DefaultURLStringUtil;
+
+public class BaseRemoteService 
 	implements RemoteService{
 	
 	@Override
-	public abstract String getURLString(final URLInfo urlData);
+	public String getURLString(final URLInfo urlData) {
+		return DefaultURLStringUtil.toString(urlData);
+	}
 	
 	@Override
-	public abstract RequestManager getRequesManager();
+	public RequestManager getRequesManager() {
+		return new DefaultRequestManager();
+	}
 	
 	@Override
 	public URLConfigManager getURLConfigManager() {
-		return SimpleURLConfigManager.getInstance();
+		return DefaultURLConfigManager.getInstance();
 	}
 	
 	@Override
@@ -25,12 +32,6 @@ public abstract class AbstractRemoteService
 	
 	@Override
 	public void callback(Response response, RequestCallback callback) {
-		if(callback != null) {
-			if(!response.hasError()) {
-				callback.onSuccess(response.getResult());
-			}else {
-				callback.onFail(response.getErrorType(), response.getErrorMessage());
-			}
-		}
+		DefaultCallbackUtil.callback(response, callback);
 	}
 }

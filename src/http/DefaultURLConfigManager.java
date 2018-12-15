@@ -18,17 +18,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class SimpleURLConfigManager 
+public class DefaultURLConfigManager 
 	implements URLConfigManager {
 	
-	private static SimpleURLConfigManager instance;
+	private static DefaultURLConfigManager instance;
 	private static final String FILENAME = "url_example.xml";
 	
-	public static SimpleURLConfigManager getInstance() {
+	public static DefaultURLConfigManager getInstance() {
 		if(instance == null) {
-			synchronized(SimpleURLConfigManager.class) {
+			synchronized(DefaultURLConfigManager.class) {
 				if(instance == null) {
-					instance = new SimpleURLConfigManager();
+					instance = new DefaultURLConfigManager();
 				}
 			}
 		}
@@ -37,7 +37,7 @@ public class SimpleURLConfigManager
 	
 	private final List<URLInfo> urlList = new ArrayList<>();
 	
-	private SimpleURLConfigManager() {}
+	private DefaultURLConfigManager() {}
 	
     @Override
     public URLInfo findURL(final String findKey) {

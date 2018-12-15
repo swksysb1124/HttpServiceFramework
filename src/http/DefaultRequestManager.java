@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleRequestManager 
+public class DefaultRequestManager 
 	implements RequestManager{
 
 	@Override

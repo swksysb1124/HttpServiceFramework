@@ -3,8 +3,8 @@ package example;
 import java.util.ArrayList;
 import java.util.List;
 
-import http.AbstractRemoteService;
-import http.SimpleRequestManager;
+import http.BaseRemoteService;
+import http.DefaultRequestManager;
 import http.HeaderField;
 import http.RequestCallback;
 import http.RequestManager;
@@ -14,7 +14,7 @@ import http.URLInfo;
 import util.JSONParserUtil;
 
 public class ExampleRemoteService 
-	extends AbstractRemoteService 
+	extends BaseRemoteService 
 	implements ExampleMobileApi{
 
 	private ExampleRemoteService() {}
@@ -30,15 +30,6 @@ public class ExampleRemoteService
 			}
 		}
 		return instance;
-	}
-	
-	@Override
-	public String getURLString(URLInfo urlData) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(urlData.getScheme());
-		builder.append(urlData.getHost());
-		builder.append(urlData.getPath());
-		return builder.toString();
 	}
 	
 	@Override
@@ -91,10 +82,5 @@ public class ExampleRemoteService
 		
 		Response response = getResponse("testDELETE", rqProperties, null, null);
 		callback(response, callback);
-	}
-
-	@Override
-	public RequestManager getRequesManager() {
-		return new SimpleRequestManager();
 	}
 }
