@@ -40,7 +40,14 @@ public interface ExampleMobileAPI {
 
 ### 實作 RemoteService 
 
-繼承 `BaseRemoteService` 跟實作 `MobileAPI` 介面
+**建議實作方式**
+1. 繼承 `BaseRemoteService` 類別。 
+2. 實作 `MobileAPI` 介面。
+3. 實作 *單模模式 (Singleton Pattern)*
+4. 如果URL有特別規則，可以透過覆寫 `getURLString(urlData)` 方法 來符合其規則。
+5. 取得 Response 會透過 `callback(key, response, requestCallback)`回調。
+   `BaseRemoteService` 有提供預設的回調方式 `DefaultCallbackUtil.callback(response, callback)`。
+   如果預設回調不適用，可以覆寫 `callback(key, response, requestCallback)` 方法。
 
 ```java
 public class ExampleRemoteService 
