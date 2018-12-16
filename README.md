@@ -1,5 +1,7 @@
 # HttpServiceFramework
 
+設計由Java實現基於HTTP/HTTPS協議的傳輸回調框架。
+
 ## 使用方式
 
 ### 格式化 MobileAPI 的 URL資訊
