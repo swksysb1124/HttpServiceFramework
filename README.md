@@ -74,8 +74,7 @@ public class ExampleRemoteService
 		rqProperties.add(new HeaderField("Accept","application/json"));
 		rqProperties.add(new HeaderField("User-Agent","json.app"));
 		
-		Response response = getResponse("testGET", rqProperties, rqParams, null);
-		callback(response, callback);
+		invoke("testGET", rqProperties, rqParams, null, callback);
 	}
 
 	@Override
@@ -87,8 +86,7 @@ public class ExampleRemoteService
 		
 		String body = JSONParserUtil.toJson(new UserAccount(email, password));
 		
-		Response response = getResponse("testPOST", rqProperties, null, body);
-	        callback(response, callback);
+		invoke("testPOST", rqProperties, null, body, callback);
 	}
 }
 ```
@@ -99,19 +97,19 @@ public class ExampleRemoteService
 public class BaseRemoteService 
 	implements RemoteService{
 	
-	// 定義生成 URL字串 的方法，這會用在發送 Http Request 前被使用。預設使用 DefaultURLStringUtil.toString(urlData)
+	// 定義生成 URL字串 的方法，這會用在發送 Http Request 前被使用。預設使用 DefaultURLStringUtil.toString(urlData) 方法
 	@Override
 	public String getURLString(final URLInfo urlData) {
 		return DefaultURLStringUtil.toString(urlData);
 	}
 	
-	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager物件
+	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager 物件
 	@Override
 	public RequestManager getRequesManager() {
 		return new DefaultRequestManager();
 	}
 	
-	// 注入 URLConfigManager 的實體。預設使用 DefaultURLConfigManager物件
+	// 注入 URLConfigManager 的實體。預設使用 DefaultURLConfigManager 物件
 	@Override
 	public URLConfigManager getURLConfigManager() {
 		return DefaultURLConfigManager.getInstance();
@@ -119,15 +117,16 @@ public class BaseRemoteService
 	
 	
 	@Override
-	public Response getResponse(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, final String requestBody) {
+	public void invoke(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, final String requestBody, RequestCallback callback) {
 	    final URLInfo urlData = getURLConfigManager().findURL(key);
 	    String urlStr = getURLString(urlData);
-	    return getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
+	    Response response = getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
+	    callback(key, response, callback);
 	} 
 	
-	// 定義取得結果後回調的動作。預設使用 DefaultCallbackUtil.callback(response, callback)
+	// 定義取得Response後，回調的行為，可以針對 key 做訂製。預設使用 DefaultCallbackUtil.callback(response, callback) 方法
 	@Override
-	public void callback(Response response, RequestCallback callback) {
+	public void callback(String key, Response response, RequestCallback callback) {
 		DefaultCallbackUtil.callback(response, callback);
 	}
 }
