@@ -1,12 +1,12 @@
 # HttpServiceFramework
 
-設計由Java實現基於HTTP/HTTPS協議的傳輸回調框架。
+設計由 Java 實現基於 HTTP/HTTPS 協議的傳輸回調框架。
 
 ## 使用方式
 
-### 格式化 MobileAPI 的 URL資訊
+### 格式化 WebAPI 的 URL資訊
 
-將 MobileAPI 的 URL資訊 存成 XML格式，格式如下：
+將 WebAPI 的 URL資訊 存成 XML格式，格式如下：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -31,10 +31,10 @@
 </config>
 ```
 
-### 介面化 MobileAPI
+### 介面化 WebAPI
 
 ```java
-public interface ExampleMobileAPI {
+public interface ExampleWebAPI {
 	void testGET(String attrValue1, String attrValue2, RequestCallback callback);
 	void testPOST(String email, String password, RequestCallback callback);
 }
@@ -44,7 +44,7 @@ public interface ExampleMobileAPI {
 
 **建議實作方式**
 1. 繼承 `BaseRemoteService` 類別。 
-2. 實作 `MobileAPI` 介面。
+2. 實作 `WebAPI` 介面。
 3. 實作 *單模模式 (Singleton Pattern)*
 4. 如果URL有特別規則，可以透過覆寫 `getURLString(urlData)` 方法 來符合其規則。
 5. 取得 Response 會透過 `callback(key, response, requestCallback)`回調。
@@ -54,7 +54,7 @@ public interface ExampleMobileAPI {
 ```java
 public class ExampleRemoteService 
 	extends BaseRemoteService 
-	implements ExampleMobileAPI{
+	implements ExampleWebAPI{
 
 	private ExampleRemoteService() {}
 	
@@ -100,7 +100,7 @@ public class ExampleRemoteService
 }
 ```
 
-#### 特別說明`BaseRemoteService`內容
+> 特別說明`BaseRemoteService`內容
 
 ```java
 public class BaseRemoteService 

@@ -12,7 +12,7 @@ import util.JSONParserUtil;
 
 public class ExampleRemoteService 
 	extends BaseRemoteService 
-	implements ExampleMobileAPI{
+	implements ExampleWebServiceAPI{
 
 	private ExampleRemoteService() {}
 	
