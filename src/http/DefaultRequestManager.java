@@ -54,7 +54,7 @@ public class DefaultRequestManager
 	        }else {
 	            InputStream inputStream = connection.getErrorStream();
 	            String errorMessage = getResponseBody(inputStream);
-	            setErrorResponse(Response.OTHERS_ERROR, errorMessage, response);
+	            setErrorResponse(statusCode, errorMessage, response);
 	        }
 	        
 	    }catch (SocketTimeoutException se) {

@@ -4,18 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import http.BaseRemoteService;
-import http.DefaultRequestManager;
 import http.HeaderField;
 import http.RequestCallback;
-import http.RequestManager;
 import http.QueryAttribute;
 import http.Response;
-import http.URLInfo;
 import util.JSONParserUtil;
 
 public class ExampleRemoteService 
 	extends BaseRemoteService 
-	implements ExampleMobileApi{
+	implements ExampleMobileAPI{
 
 	private ExampleRemoteService() {}
 	
@@ -43,8 +40,7 @@ public class ExampleRemoteService
 		rqProperties.add(new HeaderField("Accept","application/json"));
 		rqProperties.add(new HeaderField("User-Agent","json.app"));
 		
-		Response response = getResponse("testGET", rqProperties, rqParams, null);
-		callback(response, callback);
+		invoke("testGET", rqProperties, rqParams, null, callback);
 	}
 
 	@Override
@@ -56,8 +52,7 @@ public class ExampleRemoteService
 		
 		String body = JSONParserUtil.toJson(new UserAccount(email, password));
 		
-		Response response = getResponse("testPUT", rqProperties, null, body);
-		callback(response, callback);
+		invoke("testPUT", rqProperties, null, body, callback);
 	}
 
 	@Override
@@ -69,8 +64,7 @@ public class ExampleRemoteService
 		
 		String body = JSONParserUtil.toJson(new UserAccount(email, password));
 		
-		Response response = getResponse("testPOST", rqProperties, null, body);
-		callback(response, callback);
+		invoke("testPOST", rqProperties, null, body, callback);
 	}
 
 	@Override
@@ -80,7 +74,6 @@ public class ExampleRemoteService
 		rqProperties.add(new HeaderField("Accept","application/json"));
 		rqProperties.add(new HeaderField("User-Agent","json.app"));
 		
-		Response response = getResponse("testDELETE", rqProperties, null, null);
-		callback(response, callback);
+		invoke("testDELETE", rqProperties, null, null, callback);
 	}
 }

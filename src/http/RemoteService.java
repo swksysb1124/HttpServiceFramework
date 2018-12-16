@@ -6,6 +6,6 @@ public interface RemoteService {
 	String getURLString(final URLInfo urlInfo);
 	RequestManager getRequesManager();
 	URLConfigManager getURLConfigManager();
-	Response getResponse(final String key, List<HeaderField> headers, List<QueryAttribute> queryAtts, final String requestBody);
-	void callback(Response response, RequestCallback callback);
+	void invoke(final String key, List<HeaderField> headers, List<QueryAttribute> queryAtts, final String requestBody, RequestCallback callback);
+	void callback(final String key, Response response, RequestCallback callback);
 }

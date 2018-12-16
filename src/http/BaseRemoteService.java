@@ -24,14 +24,15 @@ public class BaseRemoteService
 	}
 	
 	@Override
-	public Response getResponse(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, final String requestBody) {
+	public void invoke(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, final String requestBody, RequestCallback callback) {
 	    final URLInfo urlData = getURLConfigManager().findURL(key);
 	    String urlStr = getURLString(urlData);
-	    return getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
+	    Response response = getRequesManager().getResponse(urlStr, urlData.getMethod(), rqProperties, rqParams, requestBody);
+	    callback(key, response, callback);
 	} 
 	
 	@Override
-	public void callback(Response response, RequestCallback callback) {
+	public void callback(String key, Response response, RequestCallback callback) {
 		DefaultCallbackUtil.callback(response, callback);
 	}
 }

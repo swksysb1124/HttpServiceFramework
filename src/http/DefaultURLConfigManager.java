@@ -75,11 +75,11 @@ public class DefaultURLConfigManager
                 }
             }
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        	System.out.println(e.toString());
         } catch (SAXException e) {
-            e.printStackTrace();
+        	System.out.println(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
         }
     }
     
