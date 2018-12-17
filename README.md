@@ -50,19 +50,7 @@ public interface ExampleWebServiceAPI {
 4. 如果URL有特別規則，可以透過覆寫 `interceptURLString(urlInfo)` 方法 來符合其規則。
 5. HTTP請求 結果會透過 `onSuccess(key, response, data)` 跟 `onFail(key, response, errorType, errorMessage)`回調至 實作的`RemoteService`。
    實作的`RemoteService`物件可透過 `OnDataReceivedListener().onSuccess(key, content)` 跟 `OnDataReceivedListener().onFail(key, errorType, errorMessage)` 回傳至主程式。
-6. 可以換不同的 `RequestManager` 實作，方法是覆寫 `getRequesManager()` 方法。
-```java
-public class ExampleRemoteService {
-	...
-	
-	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager 物件
-	@Override
-	public RequestManager getRequesManager() {
-		return new ThreadRequestManager();
-	}
-}
-```
-
+  
 ```java
 public class ExampleRemoteService 
 	extends BaseRemoteService 
@@ -147,8 +135,19 @@ public class ExampleRemoteService
 	}
 }
 ```
-
-
+   
+6. 可以換不同的 `RequestManager` 實作，方法是覆寫 `getRequesManager()` 方法。
+```java
+public class ExampleRemoteService {
+	...
+	
+	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager 物件
+	@Override
+	public RequestManager getRequesManager() {
+		return new ThreadRequestManager();
+	}
+}
+```
 
 ### 調用方式
 
