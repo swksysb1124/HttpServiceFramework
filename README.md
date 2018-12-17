@@ -44,33 +44,10 @@ public interface ExampleWebServiceAPI {
 ### 實作 RemoteService 
 
 **建議實作方式**
-1. 繼承 `BaseRemoteService` 類別。 
-2. 實作 `WebServiceAPI` 介面。透過 `WebServiceAPI` 介面輸入 HTTP請求需要的參數，最後呼叫`invoke(key, rqProperties, List<QueryAttribute> rqParams, body)`。
-3. 實作 *單模模式 (Singleton Pattern)*
-4. 如果URL有特別規則，可以透過覆寫 `interceptURLString(urlInfo)` 方法 來符合其規則。
-5. HTTP請求 結果會透過 `onSuccess(key, response, data)` 跟 `onFail(key, response, errorType, errorMessage)`回調至 實作的`RemoteService`。
-   實作的`RemoteService`物件可透過 `OnDataReceivedListener().onSuccess(key, content)` 跟 `OnDataReceivedListener().onFail(key, errorType, errorMessage)` 回傳至主程式。
-  
-```java
-public class ExampleRemoteService 
-	extends BaseRemoteService 
-	implements ExampleWebServiceAPI{
+1. 繼承 `BaseRemoteService` 類別 並 實作 `WebServiceAPI` 介面。透過 `WebServiceAPI` 介面輸入 HTTP請求需要的參數，最後呼叫`invoke(key, headerFields, queryAttributes, body)`。
 
-	// 建議使用單模模式
-	private ExampleRemoteService() {}
-	
-	private static ExampleRemoteService instance;
-	
-	public static ExampleRemoteService getInstance() {
-		if(instance == null) {
-			synchronized(ExampleRemoteService.class) {
-				if(instance == null) {
-					instance = new ExampleRemoteService();
-				}
-			}
-		}
-		return instance;
-	}
+```java
+public class ExampleRemoteService extends BaseRemoteService implements ExampleWebServiceAPI{
 	
 	// 實作 WebServiceAPI
 	@Override
@@ -100,6 +77,53 @@ public class ExampleRemoteService
 		invoke("testPOST", rqProperties, null, body);
 	}
 
+	...
+}
+```
+
+2. 實作 *單模模式 (Singleton Pattern)*
+```java
+public class ExampleRemoteService {
+
+	// 建議使用單模模式
+	private ExampleRemoteService() {}
+	
+	private static ExampleRemoteService instance;
+	
+	public static ExampleRemoteService getInstance() {
+		if(instance == null) {
+			synchronized(ExampleRemoteService.class) {
+				if(instance == null) {
+					instance = new ExampleRemoteService();
+				}
+			}
+		}
+		return instance;
+	}
+}
+```
+
+3. 如果URL有特別規則，可以透過覆寫 `interceptURLString(urlInfo)` 方法 來攔截 URL字串並更改。
+
+```java
+public class ExampleRemoteService {
+	
+	@Override
+	public String interceptURLString(URLInfo urlInfo) {
+		// 攔截 URL字串 並更改
+		
+	}
+}
+```
+
+4. HTTP請求 結果會透過 `onSuccess(key, response, data)` 跟 `onFail(key, response, errorType, errorMessage)`回調至 實作的`RemoteService`。
+   實作的`RemoteService`物件可透過 `OnDataReceivedListener().onSuccess(key, content)` 跟 `OnDataReceivedListener().onFail(key, errorType, errorMessage)` 回傳至主程式。
+  
+```java
+public class ExampleRemoteService {
+	
+	...
+
 	// HTTP請求結果透過 onSuccess方法 跟 onFail方法 回傳
 	@Override
 	public void onSuccess(String key, Response response, String content) {
@@ -118,7 +142,7 @@ public class ExampleRemoteService
 }
 ```
    
-6. 可以換不同的 `RequestManager` 實作，方法是覆寫 `getRequesManager()` 方法。
+5. 可以換不同的 `RequestManager` 實作，方法是覆寫 `getRequesManager()` 方法。
 ```java
 public class ExampleRemoteService {
 	...
