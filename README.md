@@ -1,12 +1,13 @@
 # HttpServiceFramework
 
 設計由 Java 實現基於 HTTP/HTTPS 協議的傳輸回調框架。
+適用於各種 Web Service API 格式，能夠快速的生成對應的遠端服務。
 
 ## 使用方式
 
-### 格式化 WebAPI 的 URL資訊
+### 格式化 Web Service API 的 URL資訊
 
-將 WebAPI 的 URL資訊 存成 XML格式，格式如下：
+將 Web Service API 的 URL資訊 存成 XML格式，格式如下：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -31,10 +32,10 @@
 </config>
 ```
 
-### 介面化 WebAPI
+### 介面化 Web Service API
 
 ```java
-public interface ExampleWebAPI {
+public interface ExampleWebServiceAPI {
 	void testGET(String attrValue1, String attrValue2, RequestCallback callback);
 	void testPOST(String email, String password, RequestCallback callback);
 }
@@ -44,7 +45,7 @@ public interface ExampleWebAPI {
 
 **建議實作方式**
 1. 繼承 `BaseRemoteService` 類別。 
-2. 實作 `WebAPI` 介面。
+2. 實作 `WebServiceAPI` 介面。
 3. 實作 *單模模式 (Singleton Pattern)*
 4. 如果URL有特別規則，可以透過覆寫 `getURLString(urlData)` 方法 來符合其規則。
 5. 取得 Response 會透過 `callback(key, response, requestCallback)`回調。
@@ -54,7 +55,7 @@ public interface ExampleWebAPI {
 ```java
 public class ExampleRemoteService 
 	extends BaseRemoteService 
-	implements ExampleWebAPI{
+	implements ExampleWebServiceAPI{
 
 	private ExampleRemoteService() {}
 	

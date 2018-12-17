@@ -1,4 +1,4 @@
-package http;
+package response;
 
 public class Response {
 	

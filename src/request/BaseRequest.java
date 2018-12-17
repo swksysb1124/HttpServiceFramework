@@ -1,4 +1,4 @@
-package http;
+package request;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -12,19 +12,31 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultRequestManager 
-	implements RequestManager{
+import response.Response;
+import url.URLInfo;
+import util.DefaultURLStringUtil;
 
+public class BaseRequest extends Request{
+	
+	public BaseRequest(String url) {
+		super(url);
+	}
+	
 	@Override
-	public Response getResponse(String urlStr, String method, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, String requestBody) {
-		// TODO Auto-generated method stub
+	protected String createURLString(final URLInfo urlInfo) {
+		return DefaultURLStringUtil.toString(urlInfo);
+	}
+	
+	@Override
+	protected Response getResponse(String urlStr, String method, List<HeaderField> rqProperties,
+			List<QueryAttribute> rqParams, String body) {
 		HttpURLConnection connection = null;
-		
+		if(method == null) {
+			method = "GET";
+		}
 	    if(method.equals("GET")){
 	    	urlStr = addRequestParameter(urlStr, rqParams);
 	    }
-	    
-	    printRequestInfo(urlStr, method, requestBody);
 	    
 	    Response response = new Response();
 	    try {
@@ -39,7 +51,7 @@ public class DefaultRequestManager
 	        
 	        if(method.equals("POST") || method.equals("PUT")){
 	        	connection.setDoOutput(true); // 由 connecction 輸出
-	        	writeBodyToConnection(requestBody, connection);
+	        	writeBodyToConnection(getBody(), connection);
 	        }
 	        
 	        int statusCode = connection.getResponseCode();
@@ -154,12 +166,4 @@ public class DefaultRequestManager
 	    response.setErrorMessage(message);
 	    response.setResult("");
 	} 
-	
-	@Override
-	public void printRequestInfo(String url, String method, String body) {
-		System.out.print(method+ " ");
-		System.out.println(url);
-		System.out.println(body);
-	}
-
 }

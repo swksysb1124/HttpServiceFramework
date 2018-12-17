@@ -1,6 +1,5 @@
-package http;
+package url;
 
 public interface URLConfigManager {
 	URLInfo findURL(String findKey);
-	void fetchUrlDataFromXml();
 }

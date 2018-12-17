@@ -11,26 +11,30 @@ import request.RequestManager;
 import response.Response;
 import util.JSONParserUtil;
 
-public class ExampleRemoteService 
-	extends BaseRemoteService 
-	implements ExampleWebServiceAPI{
+public class ExampleRemoteServiceWithExecutorRequestManager 
+extends BaseRemoteService 
+implements ExampleWebServiceAPI{
 
-	private ExampleRemoteService() {}
+private ExampleRemoteServiceWithExecutorRequestManager() {}
+
+	private static ExampleRemoteServiceWithExecutorRequestManager instance;
 	
-	private static ExampleRemoteService instance;
-	
-	public static ExampleRemoteService getInstance() {
+	public static ExampleRemoteServiceWithExecutorRequestManager getInstance() {
 		if(instance == null) {
-			synchronized(ExampleRemoteService.class) {
+			synchronized(ExampleRemoteServiceWithExecutorRequestManager.class) {
 				if(instance == null) {
-					instance = new ExampleRemoteService();
+					instance = new ExampleRemoteServiceWithExecutorRequestManager();
 				}
 			}
 		}
 		return instance;
 	}
 	
-
+	@Override
+	public RequestManager getRequestManager() {
+		return new ExecutorRequestManager();
+	}
+	
 	@Override
 	public void testGET(String value1, String value2) {
 		List<QueryAttribute> rqParams = new ArrayList<>();
@@ -44,7 +48,7 @@ public class ExampleRemoteService
 		
 		invoke("testGET", rqProperties, rqParams, null);
 	}
-
+	
 	@Override
 	public void testPUT(String email, String password) {
 		List<HeaderField> rqProperties = new ArrayList<>();
@@ -56,7 +60,7 @@ public class ExampleRemoteService
 		
 		invoke("testPUT", rqProperties, null, body);
 	}
-
+	
 	@Override
 	public void testPOST(String email, String password) {
 		List<HeaderField> rqProperties = new ArrayList<>();
@@ -68,7 +72,7 @@ public class ExampleRemoteService
 		
 		invoke("testPOST", rqProperties, null, body);
 	}
-
+	
 	@Override
 	public void testDELETE() {
 		List<HeaderField> rqProperties = new ArrayList<>();
@@ -78,14 +82,14 @@ public class ExampleRemoteService
 		
 		invoke("testDELETE", rqProperties, null, null);
 	}
-
+	
 	@Override
 	public void onSuccess(String key, Response response, String content) {
 		if(getOnDataReceivedListener() != null) {
 			getOnDataReceivedListener().onSuccess(key, content);
 		}
 	}
-
+	
 	@Override
 	public void onFail(String key, Response response, int errorType, String errorMessage) {
 		if(getOnDataReceivedListener() != null) {

@@ -1,91 +1,55 @@
 package example;
 
-import http.RequestCallback;
+import remoteservice.OnDataReceivedListener;
 
 public class MainTest {
+	
+	public static boolean stop = false;
 
 	public static void main(String[] args) {
+		setDataListener();
 		testGET();
 		testPOST();
 		testPUT();
-		testDELETE();
+		testDELETE();		
+	}
+	
+	private static void setDataListener() {
+		ExampleRemoteService.getInstance()
+			.setOnDataReceivedListener(new OnDataReceivedListener() {
+
+			@Override
+			public void onSuccess(String key, String content) {
+				System.out.println(key+": SUCCESS");
+				System.out.println(content);
+			}
+
+			@Override
+			public void onFail(String key, int errorType, String errorMessage) {
+				System.out.println(key+": ERROR");
+				System.out.println("[error:"+errorType+"] "+errorMessage);
+			}
+		});
 	}
 	
 	private static void testGET() {
-		System.out.println("test GET Method");
 		ExampleRemoteService.getInstance()
-			.testGET("value1", "value2", new RequestCallback() {
-
-			@Override
-			public void onSuccess(String content) {
-				System.out.println("SUCCESS");
-				System.out.println(content);
-			}
-	
-			@Override
-			public void onFail(int errorType, String errorMessage) {
-				System.out.println("ERROR");
-				System.out.println("[error:"+errorType+"] "+errorMessage);
-			}
-			
-		});
+			.testGET("value1", "value2");
 	}
 	
 	private static void testPOST() {
-		System.out.println("test POST Method");
 		ExampleRemoteService.getInstance()
-			.testPOST("swksysb1124@gmail.com","QWEasd123", new RequestCallback() {
-	
-			@Override
-			public void onSuccess(String content) {
-				System.out.println("SUCCESS");
-				System.out.println(content);
-			}
-	
-			@Override
-			public void onFail(int errorType, String errorMessage) {
-				System.out.println("ERROR");
-				System.out.println("[error:"+errorType+"] "+errorMessage);
-			}
-		});
+			.testPOST("swksysb1124@gmail.com","QWEasd123");
 	}
 	
 	private static void testPUT() {
-		System.out.println("test PUT Method");
 		ExampleRemoteService.getInstance()
-			.testPUT("swksysb1124@gmail.com","QWEasd123", new RequestCallback() {
-	
-			@Override
-			public void onSuccess(String content) {
-				System.out.println("SUCCESS");
-				System.out.println(content);
-			}
-	
-			@Override
-			public void onFail(int errorType, String errorMessage) {
-				System.out.println("ERROR");
-				System.out.println("[error:"+errorType+"] "+errorMessage);
-			}
-		});
+			.testPUT("swksysb1124@gmail.com","QWEasd123");
 	}
 	
 	private static void testDELETE() {
-		System.out.println("test DELETE Method");
 		ExampleRemoteService.getInstance()
-			.testDELETE(new RequestCallback() {
-	
-			@Override
-			public void onSuccess(String content) {
-				System.out.println("SUCCESS");
-				System.out.println(content);
-			}
-	
-			@Override
-			public void onFail(int errorType, String errorMessage) {
-				System.out.println("ERROR");
-				System.out.println("[error:"+errorType+"] "+errorMessage);
-			}
-		});
+			.testDELETE();
 	}
 
 }

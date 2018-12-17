@@ -1,15 +1,15 @@
 package util;
 
-import http.RequestCallback;
-import http.Response;
+import request.RequestCallback;
+import response.Response;
 
 public class DefaultCallbackUtil {
-	public static void callback(Response response, RequestCallback callback) {
+	public static void callback(String key, Response response, RequestCallback callback) {
 		if(callback != null) {
 			if(!response.hasError()) {
-				callback.onSuccess(response.getResult());
+				callback.onSuccess(key, response, response.getResult());
 			}else {
-				callback.onFail(response.getErrorType(), response.getErrorMessage());
+				callback.onFail(key, response, response.getErrorType(), response.getErrorMessage());
 			}
 		}
 	}

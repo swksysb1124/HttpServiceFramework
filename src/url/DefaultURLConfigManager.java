@@ -1,4 +1,4 @@
-package http;
+package url;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,23 +20,9 @@ import org.xml.sax.SAXException;
 public class DefaultURLConfigManager 
 	implements URLConfigManager {
 	
-	private static DefaultURLConfigManager instance;
-	private static final String FILENAME = "url_example.xml";
-	
-	public static DefaultURLConfigManager getInstance() {
-		if(instance == null) {
-			synchronized(DefaultURLConfigManager.class) {
-				if(instance == null) {
-					instance = new DefaultURLConfigManager();
-				}
-			}
-		}
-		return instance;
-	}
-	
+	private static final String FILENAME = "url.xml";
 	private final List<URLInfo> urlList = new ArrayList<>();
 	
-	private DefaultURLConfigManager() {}
 	
     @Override
     public URLInfo findURL(final String findKey) {
@@ -53,7 +38,6 @@ public class DefaultURLConfigManager
         return null;
     }
     
-    @Override
     public void fetchUrlDataFromXml() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {

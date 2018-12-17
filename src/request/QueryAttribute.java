@@ -1,4 +1,4 @@
-package http;
+package request;
 
 public class QueryAttribute {
 	public String key;
