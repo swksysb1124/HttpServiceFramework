@@ -56,6 +56,7 @@ public class ExampleRemoteService
 	extends BaseRemoteService 
 	implements ExampleWebServiceAPI{
 
+	// 建議使用單模模式
 	private ExampleRemoteService() {}
 	
 	private static ExampleRemoteService instance;
@@ -71,7 +72,7 @@ public class ExampleRemoteService
 		return instance;
 	}
 	
-
+	// 實作 WebServiceAPI
 	@Override
 	public void testGET(String value1, String value2) {
 		List<QueryAttribute> rqParams = new ArrayList<>();
@@ -83,19 +84,8 @@ public class ExampleRemoteService
 		rqProperties.add(new HeaderField("Accept","application/json"));
 		rqProperties.add(new HeaderField("User-Agent","json.app"));
 		
+		// 將Request所需參數透過 invoke 方法 傳入底層的 RequestManager 完成 HTTP請求動作
 		invoke("testGET", rqProperties, rqParams, null);
-	}
-
-	@Override
-	public void testPUT(String email, String password) {
-		List<HeaderField> rqProperties = new ArrayList<>();
-		rqProperties.add(new HeaderField("Content-Type","application/json"));
-		rqProperties.add(new HeaderField("Accept","application/json"));
-		rqProperties.add(new HeaderField("User-Agent","json.app"));
-		
-		String body = JSONParserUtil.toJson(new UserAccount(email, password));
-		
-		invoke("testPUT", rqProperties, null, body);
 	}
 
 	@Override
@@ -110,18 +100,10 @@ public class ExampleRemoteService
 		invoke("testPOST", rqProperties, null, body);
 	}
 
-	@Override
-	public void testDELETE() {
-		List<HeaderField> rqProperties = new ArrayList<>();
-		rqProperties.add(new HeaderField("Content-Type","application/json"));
-		rqProperties.add(new HeaderField("Accept","application/json"));
-		rqProperties.add(new HeaderField("User-Agent","json.app"));
-		
-		invoke("testDELETE", rqProperties, null, null);
-	}
-
+	// HTTP請求結果透過 onSuccess方法 跟 onFail方法 回傳
 	@Override
 	public void onSuccess(String key, Response response, String content) {
+		// 透過 OnDataReceivedListener 回傳至 主程式
 		if(getOnDataReceivedListener() != null) {
 			getOnDataReceivedListener().onSuccess(key, content);
 		}
