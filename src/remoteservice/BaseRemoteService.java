@@ -9,7 +9,7 @@ import request.Request;
 import request.RequestCallback;
 import request.RequestManager;
 import request.ThreadRequestManager;
-import url.DefaultURLConfigManager;
+import url.XmlURLConfigManager;
 import url.URLConfigManager;
 import url.URLInfo;
 
@@ -33,7 +33,7 @@ public abstract class BaseRemoteService
 	
 	@Override
 	public URLConfigManager getURLConfigManager() {
-		return new DefaultURLConfigManager();
+		return new XmlURLConfigManager();
 	}
 	
 	protected void invoke(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, 

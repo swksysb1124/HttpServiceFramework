@@ -17,10 +17,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class DefaultURLConfigManager 
+public class XmlURLConfigManager 
 	implements URLConfigManager {
 	
-	private static final String FILENAME = "url.xml";
+	private static final String FILENAME = "url_example.xml";
 	private final List<URLInfo> urlList = new ArrayList<>();
 	
 	
