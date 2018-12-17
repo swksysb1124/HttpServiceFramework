@@ -123,7 +123,7 @@ public class ExampleRemoteService
 public class ExampleRemoteService {
 	...
 	
-	// 注入 RequestManager 的實體。預設使用 HttpURLConnection 實現的 DefaultRequestManager 物件
+	// 注入 RequestManager 的實體。預設使用 Thread 實現的 ThreadRequestManager 物件
 	@Override
 	public RequestManager getRequesManager() {
 		return new ThreadRequestManager();
@@ -142,6 +142,7 @@ public class MainTest {
 	}
 	
 	private static void setDataListener() {
+		// 設定 OnDataReceivedListener
 		ExampleRemoteService.getInstance()
 			.setOnDataReceivedListener(new OnDataReceivedListener() {
 
@@ -160,6 +161,7 @@ public class MainTest {
 	}
 	
 	private static void testGET() {
+		// 調用 API
 		ExampleRemoteService.getInstance()
 			.testGET("value1", "value2");
 	}
