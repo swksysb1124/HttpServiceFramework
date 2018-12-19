@@ -11,25 +11,40 @@
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<config>
+<service
+	name="HTTP Bin API Test Service">
 
-	<url
-		key="testGET" 
-		expires="300"
-		method="GET"
+	<server
 		scheme="http://"
-		host="httpbin.org"
-		path="/get" />
+		host="httpbin.org" />
+
+	<apis>
+		<api
+			key="testGET"
+			path="/get"
+			expires="300"
+			method="GET" />
 		
-	<url
-		key="testPOST"
-		expires="300"
-		method="POST"
-		scheme="http://"
-		host="httpbin.org"
-		path="/post" />
+		<api
+			key="testPOST"
+			path="/post"
+			expires="300"
+			method="POST" />
 		
-</config>
+		<api
+			key="testPUT"
+			path="/put"
+			expires="300"
+			method="PUT" />
+			
+		<api
+			key="testDELETE"
+			path="/delete"
+			expires="300"
+			method="DELETE" />
+	</apis>
+	
+</service>
 ```
 
 ### 介面化 Web Service API
@@ -47,7 +62,9 @@ public interface ExampleWebServiceAPI {
 1. 繼承 `BaseRemoteService` 類別 並 實作 `WebServiceAPI` 介面。透過 `WebServiceAPI` 介面輸入 HTTP請求需要的參數，最後呼叫`invoke(key, headerFields, queryAttributes, body)`。
 
 ```java
-public class ExampleRemoteService extends BaseRemoteService implements ExampleWebServiceAPI{
+public class ExampleRemoteService 
+	extends BaseRemoteService 
+	implements ExampleWebServiceAPI{
 	
 	// 實作 WebServiceAPI
 	@Override
@@ -102,21 +119,36 @@ public class ExampleRemoteService {
 	}
 }
 ```
+3. 注入 RequestManager，此框架提供 ExecutorRequestManager 及 ThreadRequestManager
 
-3. 如果URL有特別規則，可以透過覆寫 `interceptURLString(urlInfo)` 方法 來攔截 URL字串並更改。
+4. 注入 URLConfigManager，此框架提供 XmlV2URLConfigManager
+
+5. 如果URL有特別規則，可以透過覆寫 `interceptURLString(urlInfo)` 方法 來攔截URL字串
 
 ```java
 public class ExampleRemoteService {
 	
+	// 注入 RequestManager
 	@Override
-	public String interceptURLString(URLInfo urlInfo) {
-		// 攔截 URL字串 並更改
-		
+	protected RequestManager injectRequestManager() {
+		return new ExecutorRequestManager();
+	}
+
+	// 注入 URLConfigManager
+	@Override
+	protected URLConfigManager injectURLConfigManager() {
+		return new XmlV2URLConfigManager("httpbin_test_service_url.xml");
+	}
+	
+	@Override
+	protected String interceptURLString(URLInfo urlInfo) {
+		// 攔截URL字串
+		return null;
 	}
 }
 ```
 
-4. HTTP請求 結果會透過 `onSuccess(key, response, data)` 跟 `onFail(key, response, errorType, errorMessage)`回調至 實作的`RemoteService`。
+6. HTTP請求 結果會透過 `onSuccess(key, response, data)` 跟 `onFail(key, response, errorType, errorMessage)`回調至 實作的`RemoteService`。
    實作的`RemoteService`物件可透過 `OnDataReceivedListener().onSuccess(key, content)` 跟 `OnDataReceivedListener().onFail(key, errorType, errorMessage)` 回傳至主程式。
   
 ```java
@@ -127,30 +159,15 @@ public class ExampleRemoteService {
 	// HTTP請求結果透過 onSuccess方法 跟 onFail方法 回傳
 	@Override
 	public void onSuccess(String key, Response response, String content) {
-		// 透過 OnDataReceivedListener 回傳至 主程式
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onSuccess(key, content);
-		}
+		// 預處理資料
+		super.onSuccess(key, response, content); // 記得要加super.onSuccess() 不然不會回調到 OnDataReceivedListener().onSuccess(key, content)
+
 	}
 
 	@Override
 	public void onFail(String key, Response response, int errorType, String errorMessage) {
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onFail(key, errorType, errorMessage);
-		}
-	}
-}
-```
-   
-5. 可以換不同的 `RequestManager` 實作，方法是覆寫 `getRequesManager()` 方法。
-```java
-public class ExampleRemoteService {
-	...
-	
-	// 注入 RequestManager 的實體。預設使用 Thread 實現的 ThreadRequestManager 物件
-	@Override
-	public RequestManager getRequesManager() {
-		return new ThreadRequestManager();
+		// 預處理錯誤
+		super.onFail(key, response, errorType, errorMessage); // 記得要加super.onFail() 不然不會回調到 OnDataReceivedListener().onFail(key, errorType, errorMessage)
 	}
 }
 ```
