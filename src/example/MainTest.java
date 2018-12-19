@@ -11,7 +11,8 @@ public class MainTest {
 		testGET();
 		testPOST();
 		testPUT();
-		testDELETE();		
+		testDELETE();
+		ExampleRemoteService.getInstance().finish();
 	}
 	
 	private static void setDataListener() {
@@ -22,12 +23,14 @@ public class MainTest {
 			public void onSuccess(String key, String content) {
 				System.out.println(key+": SUCCESS");
 				System.out.println(content);
+				System.out.println("@"+Thread.currentThread().getName());
 			}
 
 			@Override
 			public void onFail(String key, int errorType, String errorMessage) {
 				System.out.println(key+": ERROR");
 				System.out.println("[error:"+errorType+"] "+errorMessage);
+				System.out.println("@"+Thread.currentThread().getName());
 			}
 		});
 	}

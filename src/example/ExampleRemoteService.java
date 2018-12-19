@@ -8,7 +8,12 @@ import request.ExecutorRequestManager;
 import request.HeaderField;
 import request.QueryAttribute;
 import request.RequestManager;
-import response.Response;
+import request.ThreadRequestManager;
+
+import url.URLConfigManager;
+import url.URLInfo;
+import url.XmlV2URLConfigManager;
+
 import util.JSONParserUtil;
 
 public class ExampleRemoteService 
@@ -29,7 +34,6 @@ public class ExampleRemoteService
 		}
 		return instance;
 	}
-	
 
 	@Override
 	public void testGET(String value1, String value2) {
@@ -79,17 +83,20 @@ public class ExampleRemoteService
 		invoke("testDELETE", rqProperties, null, null);
 	}
 
-	@Override
-	public void onSuccess(String key, Response response, String content) {
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onSuccess(key, content);
-		}
-	}
 
 	@Override
-	public void onFail(String key, Response response, int errorType, String errorMessage) {
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onFail(key, errorType, errorMessage);
-		}
+	public RequestManager injectRequestManager() {
+		return new ExecutorRequestManager();
+	}
+
+
+	@Override
+	public URLConfigManager injectURLConfigManager() {
+		return new XmlV2URLConfigManager("httpbin_test_service_url.xml");
+	}
+	
+	@Override
+	public String interceptURLString(URLInfo urlInfo) {
+		return null;
 	}
 }

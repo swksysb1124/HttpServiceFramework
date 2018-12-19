@@ -1,5 +1,7 @@
 package request;
 
+import url.XmlV2URLConfigManager;
+
 public class ThreadRequestManager 
 	implements RequestManager{
 	

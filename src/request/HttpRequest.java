@@ -16,9 +16,9 @@ import response.Response;
 import url.URLInfo;
 import util.DefaultURLStringUtil;
 
-public class BaseRequest extends Request{
+public class HttpRequest extends Request{
 	
-	public BaseRequest(String url) {
+	public HttpRequest(String url) {
 		super(url);
 	}
 	

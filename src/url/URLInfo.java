@@ -65,4 +65,15 @@ public class URLInfo {
 	public void setScheme(String scheme) {
 		this.scheme = scheme;
 	}
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("key: ").append(key).append("\n");
+		builder.append("method: ").append(method).append("\n");
+		builder.append("expires: ").append(expires).append("\n");
+		builder.append("scheme: ").append(scheme).append("\n");
+		builder.append("host: ").append(host).append("\n");
+		builder.append("path: ").append(path).append("\n");
+		return builder.toString();
+	}
 }

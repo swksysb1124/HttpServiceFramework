@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service
+	name="HTTP Bin API Test Service">
+
+	<server
+		scheme="http://"
+		host="httpbin.org" />
+
+	<apis>
+		<api
+			key="testGET"
+			path="/get"
+			expires="300"
+			method="GET" />
+		
+		<api
+			key="testPOST"
+			path="/post"
+			expires="300"
+			method="POST" />
+		
+		<api
+			key="testPUT"
+			path="/put"
+			expires="300"
+			method="PUT" />
+			
+		<api
+			key="testDELETE"
+			path="/delete"
+			expires="300"
+			method="DELETE" />
+	</apis>
+	
+</service>

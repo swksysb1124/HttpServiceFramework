@@ -2,10 +2,10 @@ package request;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+
 
 public class ExecutorRequestManager implements RequestManager {
-
+	
 	private ExecutorService executor;
 	
 	public ExecutorRequestManager() {
