@@ -42,10 +42,13 @@ public class HttpsRequest extends Request{
 	@Override
 	protected Response getResponse(String urlStr, String method, List<HeaderField> rqProperties,
 			List<QueryAttribute> rqParams, String body) {
+		
 		HttpsURLConnection connection = null;
+		
 		if(method == null) {
 			method = "GET";
 		}
+		
 	    if(method.equals("GET")){
 	    	urlStr = addRequestParameter(urlStr, rqParams);
 	    }
@@ -128,7 +131,10 @@ public class HttpsRequest extends Request{
     }
 	
 	private void addRequestProperty(final HttpURLConnection connection, List<HeaderField> rqProperties) {
-		if(rqProperties == null) return;
+		if(rqProperties == null || rqProperties.isEmpty()) {
+			return;
+		}
+		
 		for(HeaderField property: rqProperties) {
 			connection.setRequestProperty(property.key, property.value);
 		}

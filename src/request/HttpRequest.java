@@ -113,6 +113,10 @@ public class HttpRequest extends Request{
     }
 	
 	private void addRequestProperty(final HttpURLConnection connection, List<HeaderField> rqProperties) {
+		if(rqProperties == null || rqProperties.isEmpty()) {
+			return;
+		}
+		
 		for(HeaderField property: rqProperties) {
 			connection.setRequestProperty(property.key, property.value);
 		}
