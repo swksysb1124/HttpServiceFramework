@@ -17,16 +17,13 @@ public abstract class BaseRemoteService
 	implements RemoteService {
 	
 	private RequestManager mRequestManager;
+	
 	private URLConfigManager mURLConfigManager;
-
-	protected OnDataReceivedListener dataListenrer;
+	
+	private OnDataReceivedListener dataListenrer;
 	
 	public void setOnDataReceivedListener(OnDataReceivedListener dataListenrer) {
 		this.dataListenrer = dataListenrer;
-	}
-	
-	protected OnDataReceivedListener getOnDataReceivedListener() {
-		return dataListenrer;
 	}
 	
 	protected void invoke(final String key, List<HeaderField> rqProperties, List<QueryAttribute> rqParams, 
@@ -80,26 +77,26 @@ public abstract class BaseRemoteService
 	
 	@Override
 	public void onSuccess(String key, Response response, String content) {
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onSuccess(key, content);
+		if(dataListenrer != null) {
+			dataListenrer.onSuccess(key, content);
 		}
 	}
 
 	@Override
 	public void onFail(String key, Response response, int errorType, String errorMessage) {
-		if(getOnDataReceivedListener() != null) {
-			getOnDataReceivedListener().onFail(key, errorType, errorMessage);
+		if(dataListenrer != null) {
+			dataListenrer.onFail(key, errorType, errorMessage);
 		}
 	}
 	
-	protected RequestManager getRequestManager() {
+	public RequestManager getRequestManager() {
 		if(mRequestManager == null) {
 			mRequestManager = injectRequestManager();
 		}
 		return mRequestManager;
 	}
 	
-	protected URLConfigManager getURLConfigManager(){
+	public URLConfigManager getURLConfigManager() {
 		if(mURLConfigManager == null) {
 			mURLConfigManager = injectURLConfigManager();
 		}

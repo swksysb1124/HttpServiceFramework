@@ -8,7 +8,6 @@ import request.ExecutorRequestManager;
 import request.HeaderField;
 import request.QueryAttribute;
 import request.RequestManager;
-import request.ThreadRequestManager;
 
 import url.URLConfigManager;
 import url.URLInfo;
@@ -85,18 +84,18 @@ public class ExampleRemoteService
 
 
 	@Override
-	public RequestManager injectRequestManager() {
+	protected RequestManager injectRequestManager() {
 		return new ExecutorRequestManager();
 	}
 
 
 	@Override
-	public URLConfigManager injectURLConfigManager() {
+	protected URLConfigManager injectURLConfigManager() {
 		return new XmlV2URLConfigManager("httpbin_test_service_url.xml");
 	}
 	
 	@Override
-	public String interceptURLString(URLInfo urlInfo) {
+	protected String interceptURLString(URLInfo urlInfo) {
 		return null;
 	}
 }
